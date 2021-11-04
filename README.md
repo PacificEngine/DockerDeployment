@@ -4,7 +4,7 @@ gradlew clean build
 docker build --tag <tagname> .
 ```
 
-#Pre-Commit
+# Pre-Commit
 ```bash
 rm -rf gradle/wrapper gradlew gradlew.bat
 gradle wrapper --gradle-version=7.1 --distribution-type=all
