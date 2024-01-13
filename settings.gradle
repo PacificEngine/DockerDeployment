@@ -4,7 +4,7 @@ if (!System.getenv('PRINT_VERSION')) {
     include 'api'
     include 'instance'
     include 'deployment'
-    //include 'zip'
+    include 'zip'
 }
 
 dependencyResolutionManagement {
