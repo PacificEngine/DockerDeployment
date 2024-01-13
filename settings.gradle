@@ -1,22 +1,51 @@
-rootProject.name = 'docker-deployment'
-include 'instance'
-include 'deployment'
+rootProject.name = 'docker-gradle-project-template'
 
-enableFeaturePreview('VERSION_CATALOGS')
+if (!System.getenv('PRINT_VERSION')) {
+    include 'api'
+    include 'instance'
+    include 'deployment'
+    //include 'zip'
+}
+
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
-            version('spring-version', '5.3.12')
-            version('springboot-version', '2.5.6')
-            version('springcloud-version', '3.0.5')
-            alias('spring-core').to('org.springframework', 'spring-core').versionRef('spring-version')
-            alias('spring-context').to('org.springframework', 'spring-context').versionRef('spring-version')
-            alias('springboot-autoconfigure').to('org.springframework.boot', 'spring-boot-autoconfigure').versionRef('springboot-version')
-            alias('springboot-actuator').to('org.springframework.boot', 'spring-boot-starter-actuator').versionRef('springboot-version')
-            alias('springboot-log4j2').to('org.springframework.boot', 'spring-boot-starter-log4j2').versionRef('springboot-version')
-            alias('springboot-web').to('org.springframework.boot', 'spring-boot-starter-web').versionRef('springboot-version')
-            alias('springcloud-openfeign').to('org.springframework.cloud', 'spring-cloud-starter-openfeign').versionRef('springcloud-version')
-            bundle('springboot', ['spring-core', 'spring-context', 'springboot-autoconfigure', 'springboot-actuator', 'springboot-log4j2', 'springboot-web', 'springcloud-openfeign'])
+            version('springboot-version', '3.2.+')
+            version('springcloud-version', '4.1.+')
+            version('log4j-json-version', '2.22.+')
+            version('springdoc-ver', '1.7.+')
+            library('springboot-autoconfigure', 'org.springframework.boot', 'spring-boot-autoconfigure').versionRef('springboot-version')
+            library('springboot-actuator', 'org.springframework.boot', 'spring-boot-starter-actuator').versionRef('springboot-version')
+            library('springboot-log4j2', 'org.springframework.boot', 'spring-boot-starter-log4j2').versionRef('springboot-version')
+            library('spring-validation', 'org.springframework.boot','spring-boot-starter-validation').versionRef('springboot-version')
+            library('springboot-web', 'org.springframework.boot', 'spring-boot-starter-web').versionRef('springboot-version')
+            library('json-template', 'org.apache.logging.log4j','log4j-layout-template-json').versionRef('log4j-json-version')
+            library('springcloud-openfeign', 'org.springframework.cloud', 'spring-cloud-starter-openfeign').versionRef('springcloud-version')
+            library('springdoc', 'org.springdoc', 'springdoc-openapi-ui').versionRef('springdoc-ver')
+            bundle('springboot', [
+                    'spring-validation',
+                    'json-template',
+                    'springboot-autoconfigure',
+                    'springboot-actuator',
+                    'springboot-log4j2',
+                    'springboot-web',
+                    'springcloud-openfeign',
+                    'springdoc'
+            ])
+
+            version('lettuce-version', '6.3.1.RELEASE')
+            version('springdata-version', '3.2.1')
+            library('lettuce-core', 'io.lettuce', 'lettuce-core').versionRef('lettuce-version')
+            library('springdata-redis', 'org.springframework.data', 'spring-data-redis').versionRef('springdata-version')
+            library('springboot-cache', 'org.springframework.boot', 'spring-boot-starter-cache').versionRef('springboot-version')
+            library('springboot-redis', 'org.springframework.boot', 'spring-boot-starter-data-redis').versionRef('springboot-version')
+            bundle('redis', [
+                    'lettuce-core',
+                    'springdata-redis',
+                    'springboot-cache',
+                    'springboot-redis'
+            ])
         }
     }
 }
+

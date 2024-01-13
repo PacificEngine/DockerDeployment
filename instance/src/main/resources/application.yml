@@ -1,12 +1,41 @@
 management:
+  endpoint:
+    health:
+      group:
+        liveness:
+          include: diskSpace,ping
+        readiness:
+          include: redis
+        startup:
+          include: diskSpace,ping,redis
+        ping:
+          include: ping
   endpoints:
     web:
       exposure:
         include: health,info
+  health:
+    probes:
+      downstream:
+        connectTimeout: 1000
+      enabled: true
   server:
     port: 8080
 
 server:
   port: 8080
+  shutdown: graceful
 
-
+spring:
+  cache:
+    redis:
+      cacheNullValues: false
+      timeToLive: 30m
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  main:
+    banner-mode: off
+  redis:
+    client-type: lettuce
+    #host: {host}
+    #port: {port}

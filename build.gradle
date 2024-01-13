@@ -1,13 +1,62 @@
+buildscript {
+    def repo_git = false
+    def repo_gcp = false
+    repositories {
+        if((project.findProperty('git.maven.repo.url') != null || System.getenv('GIT_MAVEN_URL') != null)
+                && (project.findProperty('git.project.name') != null || project.findProperty('project.name.short') != null)) {
+            repo_git = true
+            maven {
+                name = "GitHubPackages"
+                url = "${project.findProperty('git.maven.repo.url') ?: System.getenv('GIT_MAVEN_URL')}/${project.findProperty('git.project.name') ?: project.findProperty('project.name.short')}"
+                credentials {
+                    username = project.findProperty("git.maven.repo.user") ?: System.getenv('GIT_USERNAME')
+                    password = project.findProperty("git.maven.repo.key") ?: System.getenv('GIT_TOKEN')
+                }
+            }
+        }
+        if(project.findProperty('gcp.maven.repo.url') != null || System.getenv('GCP_MAVEN_URL') != null) {
+            repo_gcp = true
+            maven {
+                name = "GCPPackages"
+                url = project.findProperty('gcp.maven.repo.url') ?: System.getenv('GCP_MAVEN_URL')
+                credentials {
+                    username = project.findProperty('gcp.maven.repo.user') ?: System.getenv('GCP_MAVEN_USER')
+                    password = project.findProperty('gcp.maven.repo.key') ?: System.getenv('GCP_MAVEN_KEY')
+                }
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
+        }
+    }
+    dependencies {
+        classpath group: 'io.github.pacificengine.build', name: 'all-gradle-plugin', version: '0.0.1'
+    }
+}
+
 plugins {
-    id 'com.github.pacificengine.build.repository'
-    id 'com.github.pacificengine.build.java'
+    id 'project-report'
+}
+
+htmlDependencyReport {
+    projects = project.allprojects
 }
 
 ext {
     isReleaseVersion        = !version.endsWith("SNAPSHOT")
-    junit_version           = '5.8.1'
-    mockito_version         = '4.0.0'
-    awaitility_version      = '4.1.1'
-    lombok_version          = '1.18.22'
-    swagger_version         = '1.5.12'
+    junit_version           = '5.10.1'
+    mockito_version         = '5.8.0'
+    awaitility_version      = '4.2.0'
+    lombok_version          = '1.18.30'
+    log4j2_version          = '2.22.+'
+    springboot_version      = '3.2.+'
+    git_tag_version         = '2.4.1'
+
+    common_version          = 'latest.release'
+}
+
+task printVersion {
+    doLast {
+        println project.property('project.version')
+    }
 }

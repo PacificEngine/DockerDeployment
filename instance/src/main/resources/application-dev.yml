@@ -1,0 +1,25 @@
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+management:
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: ping
+      show-details: "ALWAYS"
+
+spring:
+  cache:
+    redis:
+      keyPrefix: dev
+  redis:
+    host: local
+    port: 6379
+  lifecycle:
+    timeout-per-shutdown-phase: 1s
+  main:
+    banner-mode: console

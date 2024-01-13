@@ -1,6 +1,7 @@
 plugins {
     id 'io.github.pacificengine.build.repository'
-    id 'io.github.pacificengine.build.docker'
+    id 'io.github.pacificengine.build.zip'
+    id 'io.github.pacificengine.build.release'
 }
 
 dependencies {

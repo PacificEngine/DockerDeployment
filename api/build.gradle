@@ -1,28 +1,21 @@
 plugins {
     id 'io.github.pacificengine.build.repository'
     id 'io.github.pacificengine.build.java'
-    id 'org.springframework.boot' version "${springboot_version}"
-    id "com.gorylenko.gradle-git-properties" version "${git_tag_version}"
+    id 'io.github.pacificengine.build.release'
 }
 
 configurations.all {
     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 }
 
-springBoot {
-    buildInfo()
-}
-
 dependencies {
-    implementation project(':api')
-
-    implementation libs.bundles.springboot
+    compileOnly libs.bundles.springboot
     constraints {
         implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j2_version
         implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2_version
         implementation group: 'org.apache.logging.log4j', name: 'log4j-jul', version: log4j2_version
     }
-    implementation libs.bundles.redis
+    compileOnly libs.bundles.redis
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: lombok_version
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok_version

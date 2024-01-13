@@ -1,7 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Application" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.github.pacificengine.Application" />
-    <module name="docker-deployment.instance.main" />
+    <module name="docker-gradle-project-template.instance.main" />
     <option name="VM_PARAMETERS" value="-Dspring.profiles.active=dev,local" />
     <extension name="coverage">
       <pattern>
