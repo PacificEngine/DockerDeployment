@@ -2,22 +2,23 @@ buildscript {
     def repo_git = false
     def repo_gcp = false
     repositories {
-        if((project.findProperty('git.maven.repo.url') != null || System.getenv('GIT_MAVEN_URL') != null)
-                && (project.findProperty('git.project.name') != null || project.findProperty('project.name.short') != null)) {
+        if(project.findProperty('git.maven.repo.url') != null
+                || ((project.findProperty('git.maven.url') != null || System.getenv('GIT_MAVEN_URL') != null)
+                && (project.findProperty('git.project.name') != null || project.findProperty('project.name.short') != null))) {
             repo_git = true
             maven {
-                name = "GitHubPackages"
-                url = "${project.findProperty('git.maven.repo.url') ?: System.getenv('GIT_MAVEN_URL')}/${project.findProperty('git.project.name') ?: project.findProperty('project.name.short')}"
+                name = 'GitHubPackages'
+                url = project.findProperty('git.maven.repo.url') != null ?: "${project.findProperty('git.maven.url') ?: System.getenv('GIT_MAVEN_URL')}/${project.findProperty('git.project.name') ?: project.findProperty('project.name.short')}"
                 credentials {
-                    username = project.findProperty("git.maven.repo.user") ?: System.getenv('GIT_USERNAME')
-                    password = project.findProperty("git.maven.repo.key") ?: System.getenv('GIT_TOKEN')
+                    username = project.findProperty('git.maven.repo.user') ?: project.findProperty('git.repo.user') ?: System.getenv('GIT_USERNAME')
+                    password = project.findProperty('git.maven.repo.key') ?: project.findProperty('git.repo.key')  ?: System.getenv('GIT_TOKEN')
                 }
             }
         }
         if(project.findProperty('gcp.maven.repo.url') != null || System.getenv('GCP_MAVEN_URL') != null) {
             repo_gcp = true
             maven {
-                name = "GCPPackages"
+                name = 'GCPPackages'
                 url = project.findProperty('gcp.maven.repo.url') ?: System.getenv('GCP_MAVEN_URL')
                 credentials {
                     username = project.findProperty('gcp.maven.repo.user') ?: System.getenv('GCP_MAVEN_USER')
