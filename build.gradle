@@ -1,11 +1,10 @@
 buildscript {
-    def repo_git = false
-    def repo_gcp = false
     repositories {
+        mavenLocal()
+        mavenCentral()
         if(project.findProperty('git.maven.repo.url') != null
                 || ((project.findProperty('git.maven.url') != null || System.getenv('GIT_MAVEN_URL') != null)
                 && (project.findProperty('git.project.name') != null || project.findProperty('project.name.short') != null))) {
-            repo_git = true
             maven {
                 name = 'GitHubPackages'
                 url = project.findProperty('git.maven.repo.url') != null ?: "${project.findProperty('git.maven.url') ?: System.getenv('GIT_MAVEN_URL')}/${project.findProperty('git.project.name') ?: project.findProperty('project.name.short')}"
@@ -16,7 +15,6 @@ buildscript {
             }
         }
         if(project.findProperty('gcp.maven.repo.url') != null || System.getenv('GCP_MAVEN_URL') != null) {
-            repo_gcp = true
             maven {
                 name = 'GCPPackages'
                 url = project.findProperty('gcp.maven.repo.url') ?: System.getenv('GCP_MAVEN_URL')
@@ -31,13 +29,15 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'io.github.pacificengine.build', name: 'all-gradle-plugin', version: '0.0.1'
+        classpath group: 'io.github.pacificengine.build', name: 'all-gradle-plugin', version: '0.0.2'
+        classpath group: 'io.github.pacificengine.build.git', name: 'release', version: '0.0.2'
     }
 }
 
 plugins {
     id 'project-report'
 }
+apply plugin: 'io.github.pacificengine.build.git.release'
 
 htmlDependencyReport {
     projects = project.allprojects
@@ -58,6 +58,6 @@ ext {
 
 task printVersion {
     doLast {
-        println project.property('project.version')
+        println project.findProperty('project.version') ?: project.version
     }
 }

@@ -1,7 +1,7 @@
 plugins {
     id 'io.github.pacificengine.build.repository'
     id 'io.github.pacificengine.build.java'
-    id 'io.github.pacificengine.build.releasez'
+    id 'io.github.pacificengine.build.release'
 }
 
 configurations.all {
