@@ -30,7 +30,6 @@ buildscript {
     }
     dependencies {
         classpath group: 'io.github.pacificengine.build', name: 'all-gradle-plugin', version: '0.0.2'
-        classpath group: 'io.github.pacificengine.build.git', name: 'release', version: '0.0.2'
     }
 }
 
